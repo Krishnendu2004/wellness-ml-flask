@@ -371,11 +371,13 @@ def api_match_fitness():
         fitness_level = "Low"
 
     return jsonify(
-        {
-            "match_fitness_score": match_fitness_score,
-            "fitness_level": fitness_level,
-        }
-    )
+    {
+        "status": status,
+        "fitness_level": fitness_level,
+        "recommendation": recommendation,
+    }
+)
+
 
 
 @app.route("/api/training_load", methods=["GET", "POST"])
@@ -419,13 +421,13 @@ def api_training_load():
         recommendation = "High injury risk. Rest or recovery session advised."
 
     return jsonify(
-        {
-            "training_load": training_load,
-            "recommendation": recommendation,
-            "score": score,
-        }
-    )
+    {
+        "fatigue_level": training_load,
+        "advice": recommendation,
+    }
+)
 
+    
 
 @app.route("/api/diet", methods=["GET", "POST"])
 def api_diet():
