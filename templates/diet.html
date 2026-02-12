@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diet Plan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Football Diet Planner</h2>
+
+    <form method="get">
+        <label>Age</label>
+        <input type="number" name="age" required>
+
+        <label>Gender</label>
+        <select name="gender" required>
+            <option value="">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+
+        <label>Height (cm)</label>
+        <input type="number" name="height" required>
+
+        <label>Weight (kg)</label>
+        <input type="number" name="weight" required>
+
+        <label>Training Intensity</label>
+        <select name="intensity" required>
+            <option value="">Select</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+
+        <label>Goal</label>
+        <select name="goal" required>
+            <option value="">Select</option>
+            <option value="maintain">Maintain</option>
+            <option value="gain">Muscle Gain</option>
+            <option value="loss">Fat Loss</option>
+        </select>
+
+        <label>Day Type</label>
+        <select name="day" required>
+            <option value="">Select</option>
+            <option value="match">Match Day</option>
+            <option value="training">Training Day</option>
+            <option value="rest">Rest Day</option>
+        </select>
+
+        <label>Playing Position</label>
+        <select name="position" required>
+            <option value="">Select</option>
+            <option value="gk">Goalkeeper</option>
+            <option value="def">Defender</option>
+            <option value="mid">Midfielder</option>
+            <option value="fwd">Forward</option>
+        </select>
+
+        <button type="submit">Generate Diet</button>
+    </form>
+
+    {% if calories %}
+    <div class="result">
+        <strong>Daily Calories:</strong> {{ calories }} kcal
+
+        <h3>Macronutrients</h3>
+        <ul>
+            <li>Protein: {{ macros.protein }} g</li>
+            <li>Carbs: {{ macros.carbs }} g</li>
+            <li>Fats: {{ macros.fats }} g</li>
+        </ul>
+
+        <h3>Recommended Foods</h3>
+        <strong>Protein</strong>
+        <ul>
+            {% for f in foods.protein %}
+            <li>{{ f }}</li>
+            {% endfor %}
+        </ul>
+
+        <strong>Carbs</strong>
+        <ul>
+            {% for f in foods.carbs %}
+            <li>{{ f }}</li>
+            {% endfor %}
+        </ul>
+
+        <strong>Fats</strong>
+        <ul>
+            {% for f in foods.fats %}
+            <li>{{ f }}</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Weekly Meal Plan</h3>
+        <div class="weekly-plan">
+            {% for day, meal in weekly_plan.items() %}
+                <div class="plan-card">
+                    <strong>{{ day }}</strong><br>
+                    {{ meal }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

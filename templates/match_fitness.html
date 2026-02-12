@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Match Fitness Readiness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Match Fitness Check</h2>
+
+        <form action="/match-fitness" method="get">
+            <label>Sleep Hours (last night)</label>
+            <input type="number" step="0.1" name="sleep" placeholder="e.g. 7.5" required>
+
+            <label>Training Load</label>
+            <select name="training" required>
+                <option value="">Select</option>
+                <option value="light">Light</option>
+                <option value="medium">Medium</option>
+                <option value="heavy">Heavy</option>
+            </select>
+
+            <label>Muscle Soreness</label>
+            <select name="soreness" required>
+                <option value="">Select</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+
+            <button type="submit">Check Readiness</button>
+        </form>
+
+        {% if status %}
+        <div class="result">
+            <strong>Status:</strong> {{ status }} <br>
+            <strong>Readiness Level:</strong> {{ readiness }} <br><br>
+            <strong>Recommendation:</strong> {{ recommendation }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

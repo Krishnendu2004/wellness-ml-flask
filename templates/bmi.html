@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BMI Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Body & Container */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #ffffffcc; /* semi-transparent white */
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2ecc71;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        label {
+            flex-basis: 100%;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        input, select {
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            flex-basis: 45%;
+            font-size: 16px;
+        }
+
+        /* Buttons */
+button {
+    padding: 14px 30px;            /* bigger clickable area */
+    border: none;
+    border-radius: 30px;           /* rounded pill style */
+    background: #2ecc71;           /* bright green */
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    flex-basis: 100%;              /* full width on small screens */
+}
+
+button:hover {
+    background: #27ae60;           /* darker green on hover */
+    transform: translateY(-2px);   /* slight lift effect */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
+
+
+        /* Card Grid */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        /* Individual Cards */
+        .card {
+            background: #f0fff4;
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #27ae60;
+        }
+
+        .card p {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        /* Progress Bar */
+        .progress {
+            position: relative;
+            background: #d1f2e6;
+            border-radius: 12px;
+            height: 15px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: #2ecc71;
+            height: 100%;
+            border-radius: 12px;
+            width: 0%;
+            transition: width 1s ease-in-out;
+        }
+
+        /* BMI Category Colors */
+        .bmi-normal { color: #2ecc71; font-weight: 600; }
+        .bmi-overweight { color: #f1c40f; font-weight: 600; }
+        .bmi-obese { color: #e74c3c; font-weight: 600; }
+        .bmi-underweight { color: #3498db; font-weight: 600; }
+
+        @media(max-width: 600px){
+            input { flex-basis: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>BMI Dashboard</h2>
+
+        <form action="/bmi" method="get">
+            <label>Height (cm)</label>
+            <input type="number" name="height" placeholder="e.g. 170" required>
+
+            <label>Weight (kg)</label>
+            <input type="number" name="weight" placeholder="e.g. 65" required>
+
+            <label>Age</label>
+            <input type="number" name="age" placeholder="e.g. 25" required>
+
+            <label>Gender</label>
+            <select name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+
+            <button type="submit">Calculate</button>
+        </form>
+
+        {% if bmi_value %}
+        <div class="card-container">
+            <div class="card">
+                <h3>BMI</h3>
+                <p>{{ bmi_value }}</p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: {{ bmi_value * 4 }}%"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Category</h3>
+                <p class="{% if category=='Normal' %}bmi-normal{% elif category=='Overweight' %}bmi-overweight{% elif category=='Obese' %}bmi-obese{% else %}bmi-underweight{% endif %}">
+                    {{ category }}
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Required Weight Adjustment</h3>
+                <p>
+                    {% if distance < 0 %}
+                        Lose {{ distance|abs }} kg
+                    {% elif distance > 0 %}
+                        Gain {{ distance }} kg
+                    {% else %}
+                        Normal
+                    {% endif %}
+                </p>
+                <div class="progress">
+                    <div class="progress-bar" style="width: {{ distance|abs * 5 }}%; background:#27ae60;"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Distance from Normal BMI</h3>
+                <p>{{ distance }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Health Risk</h3>
+                <p>{{ risk }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Fitness Recommendation</h3>
+                <p>{{ fitness }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Animate progress bars
+        window.addEventListener('load', () => {
+            const bars = document.querySelectorAll('.progress-bar');
+            bars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>

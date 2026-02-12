@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Training Load & Fatigue</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Training Load Analysis</h2>
+
+    <form action="/training_load" method="get">
+
+        <label>Training Intensity</label>
+        <select name="intensity" required>
+            <option value="">Select</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+
+        <label>Training Duration (minutes)</label>
+        <input type="number" name="duration" placeholder="e.g. 90" required>
+
+        <label>Sleep Hours (last night)</label>
+        <input type="number" step="0.1" name="sleep" placeholder="e.g. 7.5" required>
+
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if fatigue %}
+    <div class="result">
+        <strong>Fatigue Level:</strong> {{ fatigue }} <br>
+        <strong>Advice:</strong> {{ advice }}
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>

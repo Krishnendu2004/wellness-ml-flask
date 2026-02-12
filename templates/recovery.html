@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Training Recovery</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Recovery Status</h2>
+
+        <form action="/recovery" method="get">
+            <label>Training Hours (per day)</label>
+            <input type="number" step="0.1" name="training" placeholder="e.g. 3" required>
+
+            <label>Sleep Hours</label>
+            <input type="number" step="0.1" name="sleep" placeholder="e.g. 6.5" required>
+
+            <label>Muscle Soreness</label>
+            <select name="soreness" required>
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+
+            <button type="submit">Check Recovery</button>
+        </form>
+
+        {% if status %}
+        <div class="result">
+           <strong>Status:</strong> {{ status }} <br>
+           <strong>Fatigue Level:</strong> {{ fatigue }} <br>
+           <strong>Injury Risk:</strong> {{ risk }} <br>
+           <strong>Recovery Score:</strong> {{ recovery_score }}/100 <br>
+            <strong>Recovery Focus:</strong> {{ focus }} <br><br>
+
+            <strong>Recommendation:</strong><br>
+           {{ recommendation }}
+        </div>
+        {% endif %}
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sleep Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Sleep Health Check</h2>
+
+        <form action="/sleep" method="get">
+            <label>Age</label>
+            <input type="number" name="age" placeholder="e.g. 19" required>
+
+            <label>Average Sleep (hours/day)</label>
+            <input type="number" step="0.1" name="hours" placeholder="e.g. 6.5" required>
+
+            <button type="submit">Analyze Sleep</button>
+        </form>
+
+        {% if status %}
+        <div class="result">
+            <strong>Status:</strong> {{ status }} <br>
+            <strong>Health Impact:</strong> {{ warning }} <br><br>
+            <strong>Recommendation:</strong> {{ recommendation }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

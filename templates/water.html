@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Water Intake Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Daily Water Intake</h2>
+
+    <!-- Existing Feature (DO NOT REMOVE) -->
+    <form action="/water" method="get">
+        <label>Weight (kg)</label>
+        <input type="number" name="weight" placeholder="e.g. 60" required>
+
+        <button type="submit">Calculate Water Intake</button>
+    </form>
+
+    {% if water_needed %}
+    <div class="result">
+        <strong>You should drink:</strong> {{ water_needed }} litres/day 💧
+    </div>
+    {% endif %}
+
+    <hr>
+
+    <!-- New Feature: Hydration Loss Estimator -->
+    <h2>Hydration Loss Estimator</h2>
+
+    <form action="/water" method="get">
+        <label>Training Duration (hours)</label>
+        <input type="number" step="0.1" name="duration" placeholder="e.g. 2" required>
+
+        <label>Weather Condition</label>
+        <select name="weather" required>
+            <option value="">Select</option>
+            <option value="normal">Normal</option>
+            <option value="hot">Hot</option>
+        </select>
+
+        <button type="submit">Estimate Hydration Loss</button>
+    </form>
+
+    {% if sweat_loss %}
+    <div class="result">
+        <p><strong>Estimated Sweat Loss:</strong> {{ sweat_loss }} litres</p>
+        <p><strong>Extra Water Required:</strong> {{ extra_water }} litres</p>
+        <p><strong>Dehydration Risk:</strong> {{ risk }}</p>
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

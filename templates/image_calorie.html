@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Food Calorie Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="card">
+    <h1>Food Calorie Predictor</h1>
+
+    <form action="/predict_image" method="POST" enctype="multipart/form-data">
+        <label class="file-box">
+            <input type="file" name="food_image" accept="image/*">
+            Choose Image
+        </label>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction %}
+    <div class="result">
+        <div><span>Food:</span> <b>{{ prediction.food }}</b></div>
+        <div><span>Calories:</span> <b>{{ prediction.calories }} kcal</b></div>
+
+        <b><div class="calorie-tag {{ prediction.category | lower | replace(' ', '-') }}"></div></b>
+    {{ prediction.category }}
+</div>
+
+    <p class="suggestion">
+        💡 {{ prediction.suggestion }}
+    </p>
+</div>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calorie Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Calorie Calculator</h2>
+
+    <!-- FOOD CALORIE -->
+    <h3>Food Calorie Calculator</h3>
+
+    <form method="get">
+        <label>Food Item</label>
+        <select name="food" required>
+            <option value="">Select Food</option>
+
+            <optgroup label="Healthy Foods">
+                <option value="rice">Rice (cooked)</option>
+                <option value="chapati">Chapati</option>
+                <option value="egg">Egg</option>
+                <option value="chicken">Chicken</option>
+                <option value="banana">Banana</option>
+                <option value="milk">Milk</option>
+                <option value="oats">Oats</option>
+            </optgroup>
+
+            <optgroup label="Fast / Junk Foods">
+                <option value="burger">Burger</option>
+                <option value="pizza">Pizza</option>
+                <option value="french_fries">French Fries</option>
+                <option value="fried_chicken">Fried Chicken</option>
+                <option value="shawarma">Shawarma</option>
+                <option value="noodles">Instant Noodles</option>
+                <option value="samosa">Samosa</option>
+                <option value="chocolate">Chocolate</option>
+                <option value="soft_drink">Soft Drink</option>
+            <optgroup label="Athlete / Performance Foods">
+                <option value="brown_rice">Brown Rice</option>
+                 <option value="quinoa">Quinoa</option>
+                <option value="whole_wheat_pasta">Whole Wheat Pasta</option>
+                <option value="sweet_potato">Sweet Potato</option>
+                <option value="avocado">Avocado</option>
+                <option value="peanut_butter">Peanut Butter</option>
+                <option value="almonds">Almonds</option>
+                <option value="walnuts">Walnuts</option>
+                <option value="whey_protein">Whey Protein</option>
+            </optgroup>
+            <optgroup label="Protein Foods">
+                 <option value="egg_white">Egg White</option>
+                 <option value="grilled_chicken">Grilled Chicken</option>
+                  <option value="turkey">Turkey</option>
+                 <option value="salmon">Salmon</option>
+                <option value="tuna">Tuna</option>
+                <option value="paneer">Paneer</option>
+                 <option value="tofu">Tofu</option>
+                <option value="soy_chunks">Soy Chunks</option>
+                <option value="greek_yogurt">Greek Yogurt</option>
+            </optgroup>
+
+            <optgroup label="International Foods">
+                 <option value="pasta">Pasta</option>
+               <option value="lasagna">Lasagna</option>
+                <option value="ramen">Ramen</option>
+                <option value="sushi">Sushi</option>
+               <option value="tacos">Tacos</option>
+               <option value="burrito">Burrito</option>
+                <option value="paella">Paella</option>
+               <option value="fried_rice">Fried Rice</option>
+            </optgroup>
+            <optgroup label="Vegetables & Greens">
+                <option value="spinach">Spinach</option>
+                <option value="broccoli">Broccoli</option>
+                 <option value="carrot">Carrot</option>
+                <option value="beetroot">Beetroot</option>
+                <option value="capsicum">Capsicum</option>
+                <option value="zucchini">Zucchini</option>
+               <option value="mushroom">Mushroom</option>
+            </optgroup>
+            <optgroup label="Fruits">
+               <option value="apple">Apple</option>
+               <option value="orange">Orange</option>
+                <option value="mango">Mango</option>
+                <option value="pineapple">Pineapple</option>
+                <option value="berries">Mixed Berries</option>
+                <option value="dates">Dates</option>
+                <option value="raisins">Raisins</option>
+            </optgroup>
+            <optgroup label="Drinks & Recovery">
+                 <option value="coconut_water">Coconut Water</option>
+                   <option value="lemon_water">Lemon Water</option>
+                <option value="sports_drink">Sports Drink</option>
+               <option value="protein_shake">Protein Shake</option>
+                <option value="smoothie">Fruit Smoothie</option>
+               <option value="black_coffee">Black Coffee</option>
+            </optgroup>
+
+
+        </select>
+
+        <label>Quantity</label>
+
+        <input type="number" name="quantity" required>
+
+        <button type="submit">Calculate Food Calories</button>
+    </form>
+
+    {% if food_calories %}
+    <div class="result">
+        <strong>Total Calories Consumed:</strong> {{ food_calories }} kcal
+    </div>
+    {% endif %}
+
+    <hr>
+
+    <!-- BODY CALORIE -->
+    <h3>Daily Calorie Requirement</h3>
+
+    <form method="get">
+        <label>Age</label>
+        <input type="number" name="age" required>
+
+        <label>Gender</label>
+        <select name="gender" required>
+            <option value="">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+
+        <label>Height (cm)</label>
+        <input type="number" name="height" required>
+
+        <label>Weight (kg)</label>
+        <input type="number" name="weight" required>
+
+        <button type="submit">Calculate Body Calories</button>
+    </form>
+
+    {% if body_calories %}
+    <div class="result">
+        <strong>Daily Calories Needed:</strong> {{ body_calories }} kcal/day
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ideal Weight Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Ideal Weight</h2>
+
+        <form action="/ideal-weight" method="get">
+            <label>Gender</label>
+            <select name="gender" required>
+                <option value="">Select</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+
+            <label>Height (cm)</label>
+            <input type="number" name="height" placeholder="e.g. 165" required>
+
+            <button type="submit">Calculate Ideal Weight</button>
+        </form>
+
+        {% if ideal %}
+        <div class="result">
+            <strong>Your ideal weight:</strong> {{ ideal }} kg
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
