@@ -36,7 +36,7 @@ def get_model():
         model = load_model(MODEL_PATH, compile=False)
     return model
 
-def preprocess_image(image, target_size=(256, 256)):
+def preprocess_image(image, target_size=(128, 128)):
     img = Image.open(image).convert("RGB")
     img = img.resize(target_size)
     img_array = np.array(img, dtype=np.float32)
@@ -1144,6 +1144,8 @@ def api_predict_image_json():
     try:
         if "," in image_b64 and image_b64.split(",", 1)[0].startswith("data:"):
             image_b64 = image_b64.split(",", 1)[1]
+        if len(image_b64) > 5_500_000:
+            return jsonify({"error": "image payload too large"}), 413
         image_bytes = base64.b64decode(image_b64, validate=True)
         image_stream = io.BytesIO(image_bytes)
         img_array = preprocess_image(image_stream)
