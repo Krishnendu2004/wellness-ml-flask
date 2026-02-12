@@ -8,9 +8,7 @@ import numpy as np
 from PIL import Image
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.getenv(
-    "MODEL_PATH", os.path.join(BASE_DIR, "food_mobilenet_model.h5")
-)
+MODEL_PATH = os.getenv("MODEL_PATH", os.path.join(BASE_DIR, "food_mobilenet_model.h5"))
 CLASS_NAMES_TXT = os.getenv(
     "CLASS_NAMES_PATH", os.path.join(BASE_DIR, "class_names.txt")
 )
@@ -18,7 +16,7 @@ CALORIES_CSV = os.getenv(
     "CALORIES_CSV_PATH", os.path.join(BASE_DIR, "calories_lookup.csv")
 )
 
-model = load_model(MODEL_PATH,compile=False)
+model = None
 
 with open(CLASS_NAMES_TXT, "r") as f:
     class_names = [line.strip() for line in f]
@@ -30,6 +28,13 @@ calories_lookup = df.set_index("Food")["Calories"].to_dict()
 print("MODEL exists:", os.path.exists(MODEL_PATH))
 print("CLASS file exists:", os.path.exists(CLASS_NAMES_TXT))
 print("CSV exists:", os.path.exists(CALORIES_CSV))
+
+
+def get_model():
+    global model
+    if model is None:
+        model = load_model(MODEL_PATH, compile=False)
+    return model
 
 def preprocess_image(image, target_size=(256, 256)):
     img = Image.open(image).convert("RGB")
@@ -489,7 +494,7 @@ def predict_image():
 
     # Preprocess and predict
     img_array = preprocess_image(img_file)
-    preds = model.predict(img_array)
+    preds = get_model().predict(img_array)
 
     top_idx = int(np.argmax(preds[0]))
     food_name = class_names[top_idx]
@@ -1142,7 +1147,7 @@ def api_predict_image_json():
         image_bytes = base64.b64decode(image_b64, validate=True)
         image_stream = io.BytesIO(image_bytes)
         img_array = preprocess_image(image_stream)
-        preds = model.predict(img_array)
+        preds = get_model().predict(img_array)
         top_idx = int(np.argmax(preds[0]))
         food_name = class_names[top_idx]
         calories = calories_lookup.get(food_name, "Not available")
