@@ -784,10 +784,14 @@ def diet():
     )
 @app.route("/api/bmi", methods=["GET", "POST"])
 def api_bmi():
-    height = _read_input("height", float)
-    weight = _read_input("weight", float)
+    height = _read_input("height_cm", float)
+    if height is None:
+        height = _read_input("height", float)
+    weight = _read_input("weight_kg", float)
+    if weight is None:
+        weight = _read_input("weight", float)
     if not height or not weight:
-        return jsonify({"error": "height and weight are required"}), 400
+        return jsonify({"error": "height_cm and weight_kg are required"}), 400
     return jsonify(_analyze_bmi(height, weight))
 
 
