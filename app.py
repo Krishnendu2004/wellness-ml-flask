@@ -438,6 +438,69 @@ def api_diet():
     day = _read_input("day")
     position = _read_input("position")
 
+    foods = {
+        "protein": [
+            "Eggs",
+            "Chicken breast",
+            "Fish",
+            "Paneer",
+            "Greek yogurt",
+            "Lentils (Dal)",
+        ],
+        "carbs": ["Rice", "Chapati", "Oats", "Potatoes", "Banana", "Pasta"],
+        "fats": ["Nuts", "Seeds", "Olive oil", "Peanut butter", "Avocado"],
+    }
+
+    meal_timing = {}
+    if day == "match":
+        meal_timing["pre"] = "High carbs + moderate protein (Rice, pasta, banana, oats)"
+        meal_timing["post"] = "Fast protein + carbs (Protein shake, eggs, fruits)"
+        meal_timing["recovery"] = "Balanced meal with protein & healthy fats"
+    elif intensity == "high":
+        meal_timing["pre"] = "Carb-rich meal 2-3 hrs before training"
+        meal_timing["post"] = "Protein + carbs within 30 minutes after training"
+        meal_timing["recovery"] = "Light dinner with protein & vegetables"
+    elif intensity == "medium":
+        meal_timing["pre"] = "Balanced carbs and protein"
+        meal_timing["post"] = "Protein-rich foods (eggs, paneer, dal)"
+        meal_timing["recovery"] = "Normal balanced meal"
+    else:
+        meal_timing["pre"] = "Light meal (fruits, yogurt)"
+        meal_timing["post"] = "Normal protein intake"
+        meal_timing["recovery"] = "Low-carb, high-protein meal"
+
+    weekly_plan = {}
+    if position == "fwd":
+        weekly_plan = {
+            "Monday": "Oats + banana | Rice, chicken | Pasta + veggies",
+            "Tuesday": "Eggs + toast | Rice, fish | Chapati + dal",
+            "Wednesday": "Smoothie | Chicken wrap | Sweet potato + paneer",
+            "Thursday": "Oats + nuts | Rice, chicken | Pasta",
+            "Friday": "Banana + yogurt | Light carbs | Early dinner",
+            "Match Day": "Oats + honey | Rice + chicken | Recovery shake",
+            "Sunday": "Rest day - balanced meals",
+        }
+    elif position == "mid":
+        weekly_plan = {
+            "Monday": "Oats + fruits | Rice, fish | Chapati + dal",
+            "Tuesday": "Eggs + toast | Chicken rice | Veg pasta",
+            "Wednesday": "Smoothie | Paneer bowl | Sweet potato",
+            "Thursday": "Oats | Fish curry + rice | Light dinner",
+            "Friday": "Fruits + yogurt | Rice | Early dinner",
+            "Match Day": "Carb loading | Light lunch | Recovery meal",
+            "Sunday": "Rest + hydration",
+        }
+    else:
+        weekly_plan = {
+            "Monday": "Eggs + toast | Rice, chicken | Veg curry",
+            "Tuesday": "Oats | Fish + rice | Paneer",
+            "Wednesday": "Smoothie | Chicken wrap | Soup",
+            "Thursday": "Eggs | Rice + dal | Veggies",
+            "Friday": "Light carbs | Protein meal | Early sleep",
+            "Match Day": "Balanced carbs | Light lunch | Recovery food",
+            "Sunday": "Rest day meals",
+        }
+
     required = [age, gender, height, weight, intensity, goal, day, position]
     if any(v is None for v in required):
         return (
@@ -497,7 +560,16 @@ def api_diet():
         "fats": round(daily_calories * fat_pct / 9),
     }
 
-    return jsonify({"daily_calories": daily_calories, "macros": macros})
+    return jsonify(
+        {
+            "daily_calories": daily_calories,
+            "calories": daily_calories,
+            "macros": macros,
+            "foods": foods,
+            "meal_timing": meal_timing,
+            "weekly_plan": weekly_plan,
+        }
+    )
 
 
 @app.route("/api/predict_image_json", methods=["POST"])
