@@ -36,7 +36,7 @@ def get_model():
         model = load_model(MODEL_PATH, compile=False)
     return model
 
-def preprocess_image(image, target_size=(128, 128)):
+def preprocess_image(image, target_size=(256, 256)):
     img = Image.open(image).convert("RGB")
     img = img.resize(target_size)
     img_array = np.array(img, dtype=np.float32)
