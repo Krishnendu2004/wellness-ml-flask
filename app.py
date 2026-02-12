@@ -18,7 +18,7 @@ CALORIES_CSV = os.getenv(
     "CALORIES_CSV_PATH", os.path.join(BASE_DIR, "calories_lookup.csv")
 )
 
-model = load_model(MODEL_PATH)
+model = load_model(MODEL_PATH,compile=False)
 
 with open(CLASS_NAMES_TXT, "r") as f:
     class_names = [line.strip() for line in f]
