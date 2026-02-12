@@ -355,28 +355,32 @@ def api_recovery():
 @app.route("/api/match_fitness", methods=["GET", "POST"])
 def api_match_fitness():
     sleep = _read_input("sleep", float)
-    training = _read_input("training")
-    soreness = _read_input("soreness")
-    if sleep is None or training is None or soreness is None:
+    training = (_read_input("training") or "").strip().lower()
+    soreness = (_read_input("soreness") or "").strip().lower()
+
+    if sleep is None or not training or not soreness:
         return jsonify({"error": "sleep, training, and soreness are required"}), 400
 
-    if sleep >= 7 and str(training).lower() != "heavy" and str(soreness).lower() == "no":
-        match_fitness_score = 90
+    if sleep >= 7 and training != "heavy" and soreness == "no":
+        status = "Match Ready"
         fitness_level = "High"
+        recommendation = "You are fit to play. Maintain warm-up and hydration."
     elif sleep >= 6:
-        match_fitness_score = 70
+        status = "Partially Ready"
         fitness_level = "Moderate"
+        recommendation = "Light training recommended. Avoid full match load."
     else:
-        match_fitness_score = 40
+        status = "Not Match Ready"
         fitness_level = "Low"
+        recommendation = "Rest, recovery, and proper sleep needed before playing."
 
     return jsonify(
-    {
-        "status": status,
-        "fitness_level": fitness_level,
-        "recommendation": recommendation,
-    }
-)
+        {
+            "status": status,
+            "fitness_level": fitness_level,
+            "recommendation": recommendation,
+        }
+    )
 
 
 
